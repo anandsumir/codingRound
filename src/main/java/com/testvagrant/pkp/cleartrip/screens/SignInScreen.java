@@ -3,6 +3,8 @@ package com.testvagrant.pkp.cleartrip.screens;
 import static com.testvagrant.pkp.helpers.drivers.DriverHelperFactory.getDriver;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 
 import com.testvagrant.pkp.helpers.business.ClearTripResources;
 
@@ -13,7 +15,13 @@ public class SignInScreen {
 	private String idLoginForm = "modal_window";
 	
 	public void submitEmptySignIn() {
-		getDriver().click(By.id(idSignInButton));
+	    getDriver().findElement(By.xpath("//*[@id='signInButton']")).click();
+	    getDriver().switchToFrame(idLoginForm); 
+	    getDriver().scrollTo(By.xpath("//*[@id='signInButton']"));
+	    getDriver().findElement(By.xpath("//*[@id='signInButton']")).click();
+		//getDriver().click(By.id(idSignInButton));
+		//js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'end', inline: 'nearest'});", getDriver().findElement(By.id("idSignInButton")));
+		
 	}
 	
 	public boolean isSignInErrorsExist() {
@@ -22,7 +30,7 @@ public class SignInScreen {
 	}
 	
 	public void switchToLoginFrame() {
-		getDriver().switchToFrame(By.id(idLoginForm)); 
+		getDriver().switchToFrame(idLoginForm); 
 	}
 	
 }

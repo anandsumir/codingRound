@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,11 +30,12 @@ public class ChromeDriverHelper implements Driver {
 				.build();
 		ChromeOptions options = BuilderFactory.getChromeOptionsBuilder()
 				.fromCapabilities(capabilities)
-				.withArgument("--disable-geolocation")
+				.withArgument("--disable-notifications")
 				.withArgument("--start-maximized")
 				.withArgument("--test-type")
 				.withArgument("--enable-strict-powerful-feature-restrictions")
 				.build();
+		
 		this.chromeDriver = new ChromeDriver(options);
 		this.chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		this.chromeDriver.manage().window().fullscreen();
@@ -88,9 +90,16 @@ public class ChromeDriverHelper implements Driver {
 		this.chromeDriver.quit();
 	}
 
-	public void switchToFrame(By by) {
-		WebElement form = this.chromeDriver.findElement(by);
-        this.chromeDriver.switchTo().frame(form);		
+	public void switchToFrame(String by) {
+	//	WebElement form = this.chromeDriver.findElement(by);
+        this.chromeDriver.switchTo().frame(by);		
 	}
+	
+	public void scrollTo(By by) {
+		WebElement element = this.chromeDriver.findElement(by);
+		JavascriptExecutor js = (JavascriptExecutor)chromeDriver;
+		js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'end', inline: 'nearest'});", element);
+	}
+	
 
 }

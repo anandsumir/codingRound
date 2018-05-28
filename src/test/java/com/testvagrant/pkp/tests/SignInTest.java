@@ -3,29 +3,36 @@ import com.sun.javafx.PlatformUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SignInTest {
+    
+WebDriver driver;
+ChromeOptions opts;
 
-    WebDriver driver = new ChromeDriver();
-
+	
     @Test
-    public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
+    public void shouldThrowAnErrorIfSignInDetailsAreMissing() throws InterruptedException {
 
         setDriverPath();
 
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
-        driver.findElement(By.linkText("Your trips")).click();
+        driver.findElement(By.id("userAccountLink")).click();
         driver.findElement(By.id("SignIn")).click();
-
-        driver.findElement(By.id("signInButton")).click();
-
-        String errors1 = driver.findElement(By.id("errors1")).getText();
+        Thread.sleep(3000);
+        driver.switchTo().frame("modal_window");
+        driver.findElement(By.xpath("//*[@id='signInButton']")).click();
+        String errors1 = driver.findElement(By.xpath("//div[@id='errors1']")).getText();
+        Thread.sleep(5000);
         Assert.assertTrue(errors1.contains("There were errors in your submission"));
         driver.quit();
+        
+        
+
     }
 
     private void waitFor(int durationInMilliSeconds) {
@@ -38,7 +45,11 @@ public class SignInTest {
 
     private void setDriverPath() {
         if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
+        	opts = new ChromeOptions();
+        	opts.addArguments("--disable-notifications");
+        	System.setProperty("webdriver.chrome.driver", "chromedriver");	
+        	driver=new ChromeDriver(opts);
+            
         }
         if (PlatformUtil.isWindows()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");

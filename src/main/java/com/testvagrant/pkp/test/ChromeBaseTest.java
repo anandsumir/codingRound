@@ -21,7 +21,7 @@ public class ChromeBaseTest {
 	
 	@AfterClass
 	public void setupAfterClass() {
-		DriverHelperFactory.getDriver().quit();
+		//DriverHelperFactory.getDriver().quit();
 	}
 
 }

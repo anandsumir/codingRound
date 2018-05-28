@@ -18,6 +18,7 @@ public interface Driver {
 	public boolean isElementPresent(By by);
 	public Select getSelectFromElement(WebElement element);
 	public void quit();
-	public void switchToFrame(By by);
+	public void switchToFrame(String by);
+	public void scrollTo(By by);
 
 }
